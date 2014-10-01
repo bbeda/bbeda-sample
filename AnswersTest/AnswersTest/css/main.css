@@ -1,0 +1,36 @@
+﻿.grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .grid th {
+        width: 20%;
+        text-align: left;
+    }
+
+    .grid td {
+        width: 20%;
+        padding:5px 0px 5px;
+    }
+     .grid th {
+        width: 20%;
+        padding:5px 0px 5px;
+    }
+
+    .grid tr {
+        border-bottom: 1px solid #E0E0EB;
+    }
+
+    .grid a {
+        color: #0099FF;
+        text-decoration: none;
+        cursor:pointer;
+    }
+
+.text-yes {
+    color: green;
+}
+
+.text-no {
+    color: red;
+}

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -8,10 +7,44 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Scripts.Render("~/bundles/angular")
+    @System.Web.Optimization.Scripts.Render("~/bundles/app")
     <title>Index</title>
 </head>
-<body>
-    <div> 
+<body ng-app="answers">
+    <div ng-controller="mainContainer">
+        <div ng-controller="dataGrid">
+            <h1>People</h1>
+            <span ng-show="isLoading">Loading...</span>
+            <table ng-show="!isLoading" class="grid">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Palindrome
+                    </th>
+                    <th>
+                        Authorised
+                    </th>
+                    <th>
+                        Enabled
+                    </th>
+                    <th>
+                        Colours
+                    </th>
+                </tr>
+                <tr ng-repeat="person in people">
+                    <td><a ng-click="edit()">{{person.name}}</a></td>
+                    <td><yes-no value="person.isPalindrome"/></td>
+                    <td><yes-no value="person.isAuthorised"/></td>
+                    <td><yes-no value="person.isEnabled" /></td>
+                    <td>{{person.coloursDisplay}}</td>
+                </tr>
+            </table>
+        </div>
+        <div ng-controller="details"></div>
     </div>
 </body>
 </html>
