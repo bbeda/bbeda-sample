@@ -1,12 +1,16 @@
-﻿angular.module('answers').controller('details', ['$scope', 'events', 'data', function ($scope, events, dataService) {
+﻿//record details and edit options controller
+angular.module('answers').controller('details', ['$scope', 'events', 'data', function ($scope, events, dataService) {
 
     $scope.cancel = function () {
         events.publish('toggleEdit', false);
     }
+
     $scope.$on('edit', function (event, itemId) {
         loadItem(itemId);
     });
 
+
+    //make server request and load required item
     function loadItem(itemId) {
         setIsLoading(true);
         dataService.loadDetails(itemId).success(function (result) {
@@ -14,16 +18,16 @@
             setIsLoading(false);
         });
     }
+
+    //update scope to reflect the new item being edited
     function updateScope(data) {
         $scope.item = data.person;
         $scope.colours = data.availableColors;
         updateColorSet();
-
     }
-
-    function setIsLoading(value) {
-        $scope.isLoading = value;
-    }
+    //a transform is needed to update the isEnabled property on colours set 
+    //wether the person has the colour set as favourite or not
+    //consider replacing this code with LINQ style of library usage
     function updateColorSet() {
         for (var i = 0; i < $scope.item.colours.length; i++) {
             var color = $scope.item.colours[i];
@@ -49,6 +53,7 @@
     }
 
     $scope.submit = function () {
+        //create server payload
         var updatedObject = {
             id: $scope.item.id,
             isAuthorised: $scope.item.isAuthorised,
@@ -81,5 +86,10 @@
         delete $scope.item;
         delete $scope.colours;
     }
+
+    function setIsLoading(value) {
+        $scope.isLoading = value;
+    }
+
 
 }]);

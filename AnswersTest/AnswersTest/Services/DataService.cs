@@ -29,11 +29,7 @@ namespace AnswersTest.Services
         {
             using (var dbContext = new TechTestEntities())
             {
-                return dbContext.Colours.OrderBy(c => c.Name).Select(c => new ColorModel()
-                {
-                    Id = c.ColourId,
-                    Name = c.Name
-                }).ToList();
+                return dbContext.Colours.OrderBy(c => c.Name).Select(GetColorModel).ToList();
             }
         }
 
@@ -55,23 +51,7 @@ namespace AnswersTest.Services
                 }
                 else
                 {
-                    var existingColours = person.Colours.ToList();
-                    foreach (var c in existingColours)
-                    {
-                        if (!data.FavouriteColoursIds.Contains(c.ColourId))
-                        {
-                            person.Colours.Remove(c);
-                        }
-                    }
-
-                    foreach (var colorId in data.FavouriteColoursIds)
-                    {
-                        if (!person.Colours.Any(c => c.ColourId == colorId))
-                        {
-                            var color = GetColour(colorId, dbContext);
-                            person.Colours.Add(color);
-                        }
-                    }
+                    UpdatePersonColors(data, dbContext, person);
                 }
 
                 dbContext.SaveChanges();
@@ -81,6 +61,29 @@ namespace AnswersTest.Services
         private Colour GetColour(int id, TechTestEntities dbContext)
         {
             return dbContext.Colours.First(c => c.ColourId == id);
+        }
+
+        private void UpdatePersonColors(PersonData data, TechTestEntities dbContext, Person person)
+        {
+            var existingColours = person.Colours.ToList();
+            //remove colors which have been removed
+            foreach (var c in existingColours)
+            {
+                if (!data.FavouriteColoursIds.Contains(c.ColourId))
+                {
+                    person.Colours.Remove(c);
+                }
+            }
+
+            //add new colors
+            foreach (var colorId in data.FavouriteColoursIds)
+            {
+                if (!person.Colours.Any(c => c.ColourId == colorId))
+                {
+                    var color = GetColour(colorId, dbContext);
+                    person.Colours.Add(color);
+                }
+            }
         }
 
         private static PersonSummary GetPersonSummary(Person p)
@@ -96,6 +99,15 @@ namespace AnswersTest.Services
                     Id = c.ColourId,
                     Name = c.Name,
                 })
+            };
+        }
+
+        private static ColorModel GetColorModel(Colour c)
+        {
+            return new ColorModel()
+            {
+                Id = c.ColourId,
+                Name = c.Name
             };
         }
     }

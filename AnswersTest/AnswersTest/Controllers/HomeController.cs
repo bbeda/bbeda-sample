@@ -14,7 +14,7 @@ namespace AnswersTest.Controllers
     public class HomeController : Controller
     {
         private readonly IDataService DataService = new DataService();
-        // GET: Home
+        
         public ActionResult Index()
         {
             return View();

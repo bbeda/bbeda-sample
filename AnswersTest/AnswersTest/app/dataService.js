@@ -1,4 +1,5 @@
-﻿angular.module('answers').factory('data', ['$http', function ($http) {
+﻿//service used to make the AJAX calls
+angular.module('answers').factory('data', ['$http', function ($http) {
     var dataService = {};
     dataService.loadAll = function () {
         return $http({ method: 'GET', url: '/home/loadAll' });
