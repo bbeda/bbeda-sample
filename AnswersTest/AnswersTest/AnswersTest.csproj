@@ -107,11 +107,13 @@
     <Content Include="app\dataService.js" />
     <Content Include="app\detailsController.js" />
     <Content Include="app\mainContainerController.js" />
+    <Content Include="app\simpleEventDispatcher.js" />
     <Content Include="app\yesNoDirective.js" />
     <Content Include="App_Data\TechTest.mdf" />
     <Content Include="App_Data\TechTest_log.ldf">
       <DependentUpon>TechTest.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\Images\check.png" />
     <Content Include="css\main.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-animate.js" />
@@ -885,13 +887,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\JsonCamelCaseResult.cs" />
     <Compile Include="Helpers\NameFormatter.cs" />
     <Compile Include="Model\ColorModel.cs" />
-    <Compile Include="Model\PersonModel.cs" />
+    <Compile Include="Model\PersonData.cs" />
+    <Compile Include="Model\PersonSummary.cs" />
     <Compile Include="Person.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>

@@ -14,7 +14,7 @@
 </head>
 <body ng-app="answers">
     <div ng-controller="mainContainer">
-        <div ng-controller="dataGrid">
+        <div ng-controller="dataGrid" ng-if="!isEditing">
             <h1>People</h1>
             <span ng-show="isLoading">Loading...</span>
             <table ng-show="!isLoading" class="grid">
@@ -36,15 +36,44 @@
                     </th>
                 </tr>
                 <tr ng-repeat="person in people">
-                    <td><a ng-click="edit()">{{person.name}}</a></td>
-                    <td><yes-no value="person.isPalindrome"/></td>
-                    <td><yes-no value="person.isAuthorised"/></td>
+                    <td><a ng-click="edit(person)">{{person.name}}</a></td>
+                    <td><yes-no value="person.isPalindrome" /></td>
+                    <td><yes-no value="person.isAuthorised" /></td>
                     <td><yes-no value="person.isEnabled" /></td>
                     <td>{{person.coloursDisplay}}</td>
                 </tr>
             </table>
         </div>
-        <div ng-controller="details"></div>
+        <div ng-controller="details" ng-show="isEditing">
+            <div ng-show="isLoading">Is loading...</div>
+            <div ng-show="!isLoading">
+                <h1 class="lerger">Update {{item.name}}</h1>
+                <form ng-if="isEditing">
+                    <div class="container">
+                        <h2>User Details</h2>
+                        <div class="field">
+                            <label ng-click="toggleIsAuthorised()">Authorised</label>
+                            <img ng-show="item.isAuthorised" src="~/Content/Images/check.png" />
+                        </div>
+                        <div class="field">
+                            <label ng-click="toggleIsEnabled()">Enabled</label>
+                            <img ng-show="item.isEnabled" src="~/Content/Images/check.png" />
+                        </div>
+                        <h2>Favourite colours</h2>
+                        <div ng-repeat="color in colours" class="field">
+                            <label ng-click="toggleColor(color)">{{color.name}}</label>
+                            <img ng-show="color.isEnabled" src="~/Content/Images/check.png" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="submision">
+                        <button type="submit" ng-click="submit()">Save changes</button>
+                        <button type="reset" ng-click="cancel()">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>

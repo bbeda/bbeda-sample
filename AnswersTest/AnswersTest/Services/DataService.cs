@@ -9,23 +9,94 @@ namespace AnswersTest.Services
 {
     internal class DataService : IDataService
     {
-        public IEnumerable<PersonModel> LoadPeople()
+        public IEnumerable<PersonSummary> LoadPeople()
         {
             using (var dbContext = new TechTestEntities())
             {
-                return dbContext.People.OrderBy(p => p.FirstName).ToList().Select(p => new PersonModel()
+                return dbContext.People.OrderBy(p => p.FirstName).ToList().Select(GetPersonSummary).ToList();
+            }
+        }
+        public PersonSummary LoadPerson(int id)
+        {
+            using (var dbContext = new TechTestEntities())
+            {
+                return dbContext.People.Select(GetPersonSummary).FirstOrDefault(p => p.Id == id);
+            }
+        }
+
+
+        public IEnumerable<ColorModel> LoadColours()
+        {
+            using (var dbContext = new TechTestEntities())
+            {
+                return dbContext.Colours.OrderBy(c => c.Name).Select(c => new ColorModel()
                 {
-                    Name = NameFormatter.FormatName(p.FirstName, p.LastName),
-                    IsEnabled = p.IsEnabled,
-                    IsAuthorised = p.IsAuthorised,
-                    Colours = p.Colours.OrderBy(c => c.Name).Select(c => new ColorModel()
-                    {
-                        Id = c.ColourId,
-                        Name = c.Name,
-                        IsEnabled = c.IsEnabled
-                    })
+                    Id = c.ColourId,
+                    Name = c.Name
                 }).ToList();
             }
+        }
+
+        public void UpdatePerson(PersonData data)
+        {
+            using (var dbContext = new TechTestEntities())
+            {
+                var person = dbContext.People.FirstOrDefault(p => p.PersonId == data.Id);
+                if (person == null)
+                {
+                    throw new InvalidOperationException("Required person does not exist");
+                }
+
+                person.IsAuthorised = data.IsAuthorised;
+                person.IsEnabled = data.IsEnabled;
+                if (data.FavouriteColoursIds == null || !data.FavouriteColoursIds.Any())
+                {
+                    person.Colours.Clear();
+                }
+                else
+                {
+                    var existingColours = person.Colours.ToList();
+                    foreach (var c in existingColours)
+                    {
+                        if (!data.FavouriteColoursIds.Contains(c.ColourId))
+                        {
+                            person.Colours.Remove(c);
+                        }
+                    }
+
+                    foreach (var colorId in data.FavouriteColoursIds)
+                    {
+                        if (!person.Colours.Any(c => c.ColourId == colorId))
+                        {
+                            var color = GetColour(colorId, dbContext);
+                            person.Colours.Add(color);
+                        }
+                    }
+                }
+
+                dbContext.SaveChanges();
+            }
+        }
+
+        private Colour GetColour(int id, TechTestEntities dbContext)
+        {
+            return dbContext.Colours.First(c => c.ColourId == id);
+        }
+
+        private static PersonSummary GetPersonSummary(Person p)
+        {
+            return new PersonSummary()
+            {
+                Id = p.PersonId,
+                Name = NameFormatter.FormatName(p.FirstName, p.LastName),
+                IsEnabled = p.IsEnabled,
+                IsAuthorised = p.IsAuthorised,
+                Colours = p.Colours.OrderBy(c => c.Name).Select(c => new ColorModel()
+                {
+                    Id = c.ColourId,
+                    Name = c.Name,
+                })
+            };
         }
     }
 }

@@ -10,11 +10,12 @@
 
     .grid td {
         width: 20%;
-        padding:5px 0px 5px;
+        padding: 5px 0px 5px;
     }
-     .grid th {
+
+    .grid th {
         width: 20%;
-        padding:5px 0px 5px;
+        padding: 5px 0px 5px;
     }
 
     .grid tr {
@@ -24,7 +25,7 @@
     .grid a {
         color: #0099FF;
         text-decoration: none;
-        cursor:pointer;
+        cursor: pointer;
     }
 
 .text-yes {
@@ -33,4 +34,30 @@
 
 .text-no {
     color: red;
+}
+
+.larger {
+    font-size: 32px;
+}
+
+.field {
+    margin: 15px 0px;
+    text-align: right;
+}
+
+    .field img {
+        width: 12px;
+        margin-left: 5px;
+    }
+
+.container {
+    display: inline-block;
+}
+
+.submision {
+    text-align: center;
+}
+
+.container h2 {
+    border-bottom: 1px solid #E0E0EB;
 }

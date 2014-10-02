@@ -4,8 +4,12 @@
         return $http({ method: 'GET', url: '/home/loadAll' });
     };
 
-    dataService.setItem = function (item) {
+    dataService.loadDetails = function (id) {
+        return $http({ method: 'GET', url: '/home/loadPerson', params: { id: id } });
+    }
 
+    dataService.updateItem = function (item) {
+        return $http({ method: 'POST', url: '/home/updatePerson', data: item });
     }
     return dataService;
 }]);

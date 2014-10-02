@@ -5,8 +5,10 @@ using System.Web;
 
 namespace AnswersTest.Model
 {
-    public class PersonModel
+    internal class PersonSummary
     {
+        public int Id { get; set; }
+
         private string name;
         public string Name
         {
@@ -23,7 +25,7 @@ namespace AnswersTest.Model
 
         private void SetIsPalindrome(string value)
         {
-            IsPalindrome = false;
+            IsPalindrome = value.IsPalindrome();
         }
 
         public bool IsAuthorised { get; set; }
